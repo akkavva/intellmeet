@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 
 dotenv.config();
@@ -14,13 +15,21 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
-
-// This MUST be before routes
 app.use(express.json());
+
+// Rate limiting — max 20 requests per 15 minutes on auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { message: 'Too many requests, please try again later' }
+});
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
+const userRoutes = require('./routes/userRoutes');
+
+app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'IntellMeet API is running!' });
