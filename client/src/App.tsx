@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import DashboardPage from './pages/DashboardPage';
+import MeetingPage from './pages/MeetingPage';
 import useAuthStore from './store/authStore';
 
 const App = () => {
@@ -13,7 +15,11 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route
           path="/dashboard"
-          element={user ? <div className="p-8 text-2xl font-bold">Welcome {user.name}! Dashboard coming soon...</div> : <Navigate to="/login" />}
+          element={user ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/meeting/:id"
+          element={user ? <MeetingPage /> : <Navigate to="/login" />}
         />
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
