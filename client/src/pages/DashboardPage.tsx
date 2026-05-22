@@ -133,6 +133,15 @@ const DashboardPage = () => {
                     Code: {meeting.meetingCode}
                   </span>
                 </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/meeting/${meeting._id}/summary`);
+                  }}
+                  className="text-xs text-blue-600 hover:underline mt-3 block"
+                >
+                  🤖 View AI Summary →
+                </button>
               </div>
             ))}
           </div>

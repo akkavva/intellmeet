@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,6 +20,19 @@ const Navbar = () => {
         🤖 IntellMeet
       </h1>
       <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate('/tasks')}
+          className="text-white hover:text-blue-200 text-sm"
+        >
+          📋 Tasks
+        </button>
+        <button
+          onClick={() => navigate('/analytics')}
+          className="text-white hover:text-blue-200 text-sm"
+        >
+          📊 Analytics
+        </button>
+        <NotificationBell />
         <span className="text-sm">Hello, {user?.name}</span>
         <button
           onClick={handleLogout}
