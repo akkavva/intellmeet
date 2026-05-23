@@ -1,11 +1,10 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://intellmeet-backend-s9nd.onrender.com/api',
   withCredentials: true
 });
 
-// Add token to every request automatically
 API.interceptors.request.use((config) => {
   const user = localStorage.getItem('user');
   if (user) {
