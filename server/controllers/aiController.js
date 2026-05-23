@@ -1,14 +1,12 @@
-const OpenAI = require('openai');
 const Meeting = require('../models/Meeting');
 
-const OpenAI = require('openai');
-
-const getOpenAI = () => {
+const getOpenAIClient = () => {
+  const { OpenAI } = require('openai');
   return new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || 'dummy-key'
   });
 };
-// @route POST /api/ai/transcribe/:meetingId
+
 const transcribeMeeting = async (req, res) => {
   try {
     const { transcript } = req.body;
@@ -32,7 +30,6 @@ const transcribeMeeting = async (req, res) => {
   }
 };
 
-// @route POST /api/ai/summarize/:meetingId
 const summarizeMeeting = async (req, res) => {
   try {
     const { meetingId } = req.params;
@@ -43,20 +40,16 @@ const summarizeMeeting = async (req, res) => {
     }
 
     if (!meeting.transcript) {
-      return res.status(400).json({ message: 'No transcript found for this meeting' });
+      return res.status(400).json({ message: 'No transcript found' });
     }
 
-    // Call OpenAI API
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
-          content: `You are an AI meeting assistant. Analyze the meeting transcript and provide:
-1. A concise summary (2-3 sentences)
-2. Key discussion points (bullet points)
-3. Action items with assignees if mentioned
-Format your response as JSON with keys: summary, keyPoints, actionItems`
+          content: `Analyze the meeting transcript and provide JSON with keys: summary, keyPoints, actionItems`
         },
         {
           role: 'user',
@@ -79,7 +72,6 @@ Format your response as JSON with keys: summary, keyPoints, actionItems`
       };
     }
 
-    // Save summary to meeting
     meeting.summary = parsedResponse.summary;
     await meeting.save();
 
@@ -95,14 +87,11 @@ Format your response as JSON with keys: summary, keyPoints, actionItems`
   }
 };
 
-// @route POST /api/ai/action-items/:meetingId
 const extractActionItems = async (req, res) => {
   try {
     const { meetingId } = req.params;
 
-    const meeting = await Meeting.findById(meetingId)
-      .populate('participants.user', 'name email');
-
+    const meeting = await Meeting.findById(meetingId);
     if (!meeting) {
       return res.status(404).json({ message: 'Meeting not found' });
     }
@@ -111,14 +100,13 @@ const extractActionItems = async (req, res) => {
       return res.status(400).json({ message: 'No transcript found' });
     }
 
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
-          content: `Extract action items from the meeting transcript. 
-Return a JSON array of action items with format:
-[{ "task": "task description", "assignee": "person name or null", "deadline": "deadline or null" }]`
+          content: `Extract action items from transcript. Return JSON array: [{ "task": "...", "assignee": "...", "deadline": "..." }]`
         },
         {
           role: 'user',
@@ -137,7 +125,6 @@ Return a JSON array of action items with format:
       actionItems = [];
     }
 
-    // Save action items to meeting
     meeting.actionItems = actionItems.map((item) => ({
       task: item.task,
       completed: false
@@ -151,7 +138,6 @@ Return a JSON array of action items with format:
   }
 };
 
-// Mock version if no OpenAI key
 const getMockSummary = async (req, res) => {
   try {
     const { meetingId } = req.params;
@@ -166,9 +152,8 @@ const getMockSummary = async (req, res) => {
       meeting.transcript = transcript;
     }
 
-    // Mock AI response
     const mockSummary = {
-      summary: `This meeting covered important topics discussed by the team. Key decisions were made and tasks were assigned to team members.`,
+      summary: `This meeting covered important topics discussed by the team. Key decisions were made and tasks were assigned.`,
       keyPoints: [
         'Team discussed project progress',
         'New features were planned',
@@ -184,10 +169,7 @@ const getMockSummary = async (req, res) => {
     meeting.summary = mockSummary.summary;
     await meeting.save();
 
-    return res.json({
-      meetingId,
-      ...mockSummary
-    });
+    return res.json({ meetingId, ...mockSummary });
 
   } catch (error) {
     return res.status(500).json({ message: error.message });
