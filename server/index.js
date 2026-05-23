@@ -18,7 +18,10 @@ initSocket(server);
 
 app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://intellmeet-frontend.onrender.com'
+  ],
   credentials: true
 }));
 app.use(express.json());
