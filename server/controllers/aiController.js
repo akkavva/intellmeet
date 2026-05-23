@@ -1,10 +1,13 @@
 const OpenAI = require('openai');
 const Meeting = require('../models/Meeting');
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const OpenAI = require('openai');
 
+const getOpenAI = () => {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY || 'dummy-key'
+  });
+};
 // @route POST /api/ai/transcribe/:meetingId
 const transcribeMeeting = async (req, res) => {
   try {
