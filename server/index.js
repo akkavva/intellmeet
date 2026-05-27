@@ -1,3 +1,10 @@
+const Sentry = require('@sentry/node');
+
+Sentry.init({
+  dsn: 'https://ae9eba85ac5f26f3540d8b2fed0d6e3f@o4511460088545280.ingest.us.sentry.io/4511460102307840',
+  environment: process.env.NODE_ENV || 'production',
+  tracesSampleRate: 1.0,
+});
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -56,6 +63,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/meetings', meetingRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/ai', aiRoutes);
+
+app.use(Sentry.expressErrorHandler());
 
 app.get('/', (req, res) => {
   res.json({ message: 'IntellMeet API is running!' });
