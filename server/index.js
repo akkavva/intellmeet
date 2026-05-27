@@ -1,7 +1,7 @@
 const Sentry = require('@sentry/node');
 
 Sentry.init({
-  dsn: 'https://ae9eba85ac5f26f3540d8b2fed0d6e3f@o4511460088545280.ingest.us.sentry.io/4511460102307840',
+  dsn:'https://4ff7b789f83782be870975357eb57b6b@o4511460088545280.ingest.us.sentry.io/4511460294131712',
   environment: process.env.NODE_ENV || 'production',
   tracesSampleRate: 1.0,
 });
