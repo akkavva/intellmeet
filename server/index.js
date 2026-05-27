@@ -17,10 +17,24 @@ const server = http.createServer(app);
 initSocket(server);
 
 app.use(helmet());
+const allowedOrigins = [
+  "https://intellmeet-frontend.onrender.com",
+  "http://localhost:5173",
+];
+
 app.use(cors({
-  origin: '*',
-  credentials: false
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("CORS blocked: " + origin));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+app.options("*", cors());
 app.use(express.json());
 
 // Rate limiting
