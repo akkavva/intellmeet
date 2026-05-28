@@ -1,73 +1,100 @@
-# React + TypeScript + Vite
+# 🤖 IntellMeet – AI-Powered Enterprise Meeting & Collaboration Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Production-Grade Full-Stack MERN Application with Real-Time Video, AI Meeting Intelligence & Team Collaboration
 
-Currently, two official plugins are available:
+![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green)
+![React](https://img.shields.io/badge/React-19-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌐 Live Demo
+- **Frontend:** https://intellmeet-frontend.onrender.com
+- **Backend API:** https://intellmeet-backend-s9nd.onrender.com
+- **Demo Login:** test@gmail.com / 123456
 
-## React Compiler
+## 📌 Project Overview
+IntellMeet transforms unproductive meetings into actionable, trackable events using AI-powered summaries, real-time video, and smart task management — reducing meeting follow-up time by 40–60%.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
+| Feature | Description |
+|---|---|
+| 🔐 Authentication | JWT-based secure login/signup with bcrypt |
+| 📹 Video Meetings | Real-time WebRTC video conferencing |
+| 🤖 AI Summaries | Auto-generated meeting summaries & action items |
+| 💬 Real-Time Chat | Socket.io powered in-meeting chat |
+| 📋 Task Management | Kanban-style project boards |
+| 📊 Analytics | Meeting frequency & productivity metrics |
+| 🔔 Notifications | Real-time alerts for mentions & action items |
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
+| Layer | Technology |
+|---|---|
+| Frontend | React 19 + TypeScript + Vite |
+| UI | Tailwind CSS + shadcn/ui |
+| Backend | Node.js + Express |
+| Database | MongoDB + Mongoose |
+| Real-Time | Socket.io + WebRTC |
+| AI | OpenAI API |
+| Auth | JWT + bcrypt |
+| Monitoring | Sentry + Prometheus |
+| Deployment | Render (Frontend + Backend) |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Local Setup
+```bash
+# Clone the repo
+git clone https://github.com/akkavva/intellmeet.git
+cd intellmeet
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Install backend dependencies
+cd server
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Install frontend dependencies
+cd ../client
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Add environment variables
+# Create .env in server/ with:
+# MONGO_URI, JWT_SECRET, OPENAI_API_KEY, CLOUDINARY keys
+
+# Run backend
+cd server && npm start
+
+# Run frontend
+cd client && npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔐 Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+OPENAI_API_KEY=your_openai_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+NODE_ENV=production
+FRONTEND_URL=https://intellmeet-frontend.onrender.com
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📈 Monitoring
+- **Error Tracking:** Sentry (https://zidio.sentry.io)
+- **Metrics:** Prometheus endpoint at `/metrics`
+- **Security Scan:** OWASP ZAP — 3 low/medium alerts found and documented
+
+## 🏗️ Project Structure
+
+intellmeet/
+├── server/          # Express backend
+│   ├── config/      # DB & Socket config
+│   ├── controllers/ # Route handlers
+│   ├── models/      # Mongoose schemas
+│   ├── routes/      # API routes
+│   └── middleware/  # Auth middleware
+├── client/          # React frontend
+│   ├── src/
+│   │   ├── pages/   # Page components
+│   │   ├── components/
+│   │   └── lib/     # API utilities
+
+## 👨‍💻 Author
+Built for **Zidio Development** Web Development (MERN) Internship
+March–May 2026
